@@ -230,41 +230,24 @@
 
 <script>
     // ================================================================
-    // 1. PFAD ZU DEINEN PDFs – hier kannst du den Ordner anpassen
+    // 1. PFAD ZU DEINEN PDFs – Ordner in deinem Repository
     // ================================================================
-    const PDF_FOLDER = 'pdfs/';   // <-- Ordner in deinem Repository
+    const PDF_FOLDER = 'pdfs/';
+
+    // Dein GitHub-Repository-Name (fest eingetragen für benutzer-seite)
+    const REPO_NAME = 'jobecker/jobecker.github.io';
 
     // ================================================================
-    // 2. DATEIEN ÜBER GITHUB API ABRUFEN (ohne manuelle Liste)
+    // 2. DATEIEN ÜBER GITHUB API ABRUFEN
     // ================================================================
     async function fetchPdfFiles() {
         const container = document.getElementById('pdfList');
 
-        // GitHub API: Inhalt des Ordners abfragen
-        // Achtung: Der Pfad muss relativ zum Repository-Root sein.
-        // Wenn dein Repository z.B. "meine-unterlagen" heißt und die PDFs im
-        // Ordner "pdfs" liegen, dann ist der API-Pfad: /repos/.../contents/pdfs
-        // Wir nutzen window.location.pathname, um den Repo-Namen zu ermitteln.
-        const repoPath = window.location.pathname;   // z.B. "/benutzername/repo-name/"
-        const repoMatch = repoPath.match(/^\/([^/]+\/[^/]+)\//);
-        if (!repoMatch) {
-            container.innerHTML = `
-                <div class="empty-state" style="grid-column:1/-1;">
-                    <span class="big-icon">⚠️</span>
-                    <h3>Repository-Name konnte nicht erkannt werden</h3>
-                    <p style="margin-top:8px;">Bitte öffne diese Seite über GitHub Pages.</p>
-                </div>
-            `;
-            return;
-        }
-
-        const repoFullName = repoMatch[1]; // z.B. "maxmustermann/meine-unterlagen"
-        const apiUrl = `https://api.github.com/repos/${repoFullName}/contents/${PDF_FOLDER}`;
+        const apiUrl = `https://api.github.com/repos/${REPO_NAME}/contents/${PDF_FOLDER}`;
 
         try {
             const response = await fetch(apiUrl);
 
-            // Falls der Ordner nicht existiert oder leer ist
             if (!response.ok) {
                 if (response.status === 404) {
                     container.innerHTML = `
@@ -284,7 +267,7 @@
                             <span class="big-icon">🔒</span>
                             <h3>Zugriff verweigert</h3>
                             <p style="margin-top:8px;">GitHub API-Antwort: ${response.status}.<br>
-                            Stelle sicher, dass dein Repository öffentlich ist (oder füge einen Token hinzu).</p>
+                            Stelle sicher, dass dein Repository öffentlich ist.</p>
                         </div>
                     `;
                 }
@@ -293,7 +276,7 @@
 
             const data = await response.json();
 
-            // Nur Dateien mit Endung .pdf (Groß-/Kleinschreibung egal)
+            // Nur Dateien mit Endung .pdf
             const pdfFiles = data.filter(file =>
                 file.type === 'file' &&
                 file.name.toLowerCase().endsWith('.pdf')
@@ -314,21 +297,14 @@
                 return;
             }
 
-            // Sortieren nach Dateiname (alphabetisch)
+            // Sortieren nach Dateiname
             pdfFiles.sort((a, b) => a.name.localeCompare(b.name));
 
             // Für jede PDF-Datei eine Karte erzeugen
             let html = '';
             for (const file of pdfFiles) {
-                // Dateiname ohne Endung für den Anzeigenamen
                 const displayName = file.name.replace(/\.pdf$/i, '');
-
-                // Roh-URL (für "Ansehen" im Browser)
                 const rawUrl = file.download_url;
-
-                // Direkter Download-Link (gleiche URL, aber mit ?raw – für Download-Button)
-                // download_url ist bereits der rohe Link, aber wir nutzen ihn für beide.
-                const downloadUrl = rawUrl;
 
                 html += `
                     <div class="pdf-card">
@@ -338,7 +314,7 @@
                         </div>
                         <div class="pdf-actions">
                             <a href="${rawUrl}" target="_blank" class="btn btn-primary">👁️ Ansehen</a>
-                            <a href="${downloadUrl}" download class="btn btn-success">⬇️ Download</a>
+                            <a href="${rawUrl}" download class="btn btn-success">⬇️ Download</a>
                         </div>
                     </div>
                 `;
