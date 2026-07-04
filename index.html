@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Meine Studienunterlagen</title>
     <style>
-        /* === MODERNES, SAUBERES DESIGN === */
+        /* === GRUNDLEGENDES DESIGN === */
         * {
             margin: 0;
             padding: 0;
@@ -16,14 +16,12 @@
             font-family: 'Segoe UI', Roboto, system-ui, -apple-system, sans-serif;
             background: #f4f6f9;
             min-height: 100vh;
-            display: flex;
-            justify-content: center;
             padding: 2rem 1rem;
         }
 
         .container {
-            max-width: 900px;
-            width: 100%;
+            max-width: 1100px;
+            margin: 0 auto;
         }
 
         /* Header */
@@ -43,6 +41,7 @@
             display: flex;
             align-items: center;
             gap: 12px;
+            flex-wrap: wrap;
         }
 
         .header h1 span {
@@ -59,109 +58,141 @@
             font-size: 1.05rem;
         }
 
-        /* Karten-Layout für die PDFs */
-        .pdf-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-            gap: 1.25rem;
+        /* === SEMESTER-BEREICH === */
+        .semester-section {
+            margin-bottom: 2.5rem;
         }
 
-        .pdf-card {
-            background: white;
-            border-radius: 18px;
-            padding: 1.5rem 1.2rem 1.2rem;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
-            transition: transform 0.15s ease, box-shadow 0.2s ease;
-            border: 1px solid rgba(0, 0, 0, 0.04);
-            display: flex;
-            flex-direction: column;
-        }
-
-        .pdf-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 14px 30px rgba(0, 0, 0, 0.10);
-            border-color: #dbeafe;
-        }
-
-        /* PDF-Icon + Dateiname */
-        .pdf-info {
+        .semester-title {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #0f172a;
+            padding-bottom: 0.5rem;
+            border-bottom: 4px solid #3b82f6;
+            margin-bottom: 1.5rem;
             display: flex;
             align-items: center;
             gap: 12px;
-            margin-bottom: 14px;
         }
 
-        .pdf-icon {
-            background: #fee2e2;
-            width: 44px;
-            height: 44px;
-            border-radius: 12px;
+        .semester-title .badge {
+            background: #e2e8f0;
+            font-size: 0.9rem;
+            padding: 2px 14px;
+            border-radius: 40px;
+            font-weight: 400;
+            color: #475569;
+        }
+
+        /* === FACH-BEREICH === */
+        .fach-card {
+            background: white;
+            border-radius: 18px;
+            padding: 1.5rem 1.5rem 1.2rem;
+            margin-bottom: 1.25rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+            border: 1px solid rgba(0, 0, 0, 0.04);
+            transition: box-shadow 0.2s ease;
+        }
+
+        .fach-card:hover {
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .fach-header {
             display: flex;
             align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            flex-shrink: 0;
-            color: #b91c1c;
+            gap: 12px;
+            margin-bottom: 0.75rem;
         }
 
-        .pdf-name {
+        .fach-icon {
+            font-size: 1.8rem;
+        }
+
+        .fach-name {
+            font-size: 1.2rem;
             font-weight: 600;
-            font-size: 1rem;
             color: #0f172a;
-            word-break: break-word;
-            line-height: 1.3;
         }
 
-        /* Buttons */
-        .pdf-actions {
-            display: flex;
-            gap: 8px;
-            margin-top: auto;
-            flex-wrap: wrap;
-        }
-
-        .btn {
-            flex: 1;
-            min-width: 70px;
-            text-align: center;
-            padding: 0.55rem 0.2rem;
+        .fach-count {
+            font-size: 0.8rem;
+            color: #94a3b8;
+            margin-left: auto;
+            background: #f1f5f9;
+            padding: 2px 12px;
             border-radius: 40px;
-            font-size: 0.85rem;
+        }
+
+        /* PDF-Liste innerhalb eines Fachs */
+        .pdf-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 0.75rem;
+            margin-top: 0.5rem;
+        }
+
+        .pdf-item {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 0.7rem 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: background 0.15s;
+            border: 1px solid transparent;
+        }
+
+        .pdf-item:hover {
+            background: #f1f5f9;
+            border-color: #dbeafe;
+        }
+
+        .pdf-item .pdf-name {
+            font-size: 0.9rem;
             font-weight: 500;
+            color: #1e293b;
+            word-break: break-word;
+            margin-right: 8px;
+        }
+
+        .pdf-item .pdf-actions {
+            display: flex;
+            gap: 6px;
+            flex-shrink: 0;
+        }
+
+        .pdf-item .btn {
+            padding: 0.3rem 0.7rem;
+            font-size: 0.75rem;
+            border-radius: 30px;
             text-decoration: none;
-            transition: background 0.15s, color 0.15s;
+            font-weight: 500;
+            transition: background 0.15s;
             border: 1px solid transparent;
             cursor: pointer;
+            display: inline-block;
         }
 
-        .btn-primary {
+        .btn-sm-primary {
             background: #1e293b;
             color: white;
         }
-        .btn-primary:hover {
+        .btn-sm-primary:hover {
             background: #0f172a;
         }
 
-        .btn-outline {
-            background: transparent;
-            border-color: #cbd5e1;
-            color: #334155;
-        }
-        .btn-outline:hover {
-            background: #f1f5f9;
-            border-color: #94a3b8;
-        }
-
-        .btn-success {
+        .btn-sm-success {
             background: #dcfce7;
             color: #166534;
             border-color: #86efac;
         }
-        .btn-success:hover {
+        .btn-sm-success:hover {
             background: #bbf7d0;
         }
 
-        /* Leerer Zustand / keine PDFs */
+        /* Leerer Zustand */
         .empty-state {
             background: white;
             border-radius: 24px;
@@ -180,6 +211,34 @@
             font-weight: 500;
         }
 
+        /* Loading */
+        .loading {
+            text-align: center;
+            padding: 3rem;
+            color: #94a3b8;
+            font-size: 1.1rem;
+        }
+
+        .loading .spinner {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            border: 4px solid #e2e8f0;
+            border-top: 4px solid #3b82f6;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 1rem;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
         /* Footer */
         .footer {
             margin-top: 3rem;
@@ -191,154 +250,255 @@
         }
 
         /* Responsive */
-        @media (max-width: 480px) {
+        @media (max-width: 600px) {
             .header h1 {
-                font-size: 1.6rem;
-                flex-wrap: wrap;
+                font-size: 1.5rem;
             }
-            .pdf-grid {
+            .semester-title {
+                font-size: 1.3rem;
+            }
+            .pdf-list {
                 grid-template-columns: 1fr;
             }
-            .pdf-actions {
-                flex-direction: row;
+            .pdf-item {
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+            .pdf-item .pdf-actions {
+                margin-left: auto;
             }
         }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <!-- HEADER -->
-    <div class="header">
-        <h1>
-            📚 Studienunterlagen
-            <span>PDF</span>
-        </h1>
-        <p>Alle deine Skripte, Vorlesungsfolien und Übungen – immer griffbereit.</p>
+    <div class="container">
+        <!-- HEADER -->
+        <div class="header">
+            <h1>
+                📚 Studienunterlagen
+                <span>PDF</span>
+            </h1>
+            <p>Alle deine Skripte, Vorlesungsfolien und Übungen – übersichtlich nach Semestern sortiert.</p>
+        </div>
+
+        <!-- PDF-LISTE WIRD VON JAVASCRIPT BEFÜLLT -->
+        <div id="pdfList">
+            <div class="loading">
+                <div class="spinner"></div>
+                <p>Lade Dokumente...</p>
+            </div>
+        </div>
+
+        <!-- FOOTER -->
+        <div class="footer">
+            🚀 Gehostet auf GitHub Pages · automatisch aktualisiert
+        </div>
     </div>
 
-    <!-- PDF-LISTE WIRD VON JAVASCRIPT BEFÜLLT -->
-    <div id="pdfList" class="pdf-grid">
-        <!-- Hier erscheinen automatisch alle PDFs aus dem /pdfs/ Ordner -->
-    </div>
+    <script>
+        // ================================================================
+        // 1. KONFIGURATION
+        // ================================================================
+        const PDF_FOLDER = 'pdfs/';
+        const REPO_NAME = 'jobecker/jobecker.github.io';
 
-    <!-- FOOTER -->
-    <div class="footer">
-        🚀 Gehostet auf GitHub Pages · automatisch aktualisiert
-    </div>
-</div>
+        // ================================================================
+        // 2. ALLE DATEIEN AUS DEM PDFS-ORDNER ABRUFEN (rekursiv)
+        // ================================================================
+        async function fetchAllPdfs() {
+            const container = document.getElementById('pdfList');
 
-<script>
-    // ================================================================
-    // 1. PFAD ZU DEINEN PDFs – Ordner in deinem Repository
-    // ================================================================
-    const PDF_FOLDER = 'pdfs/';
+            try {
+                // GitHub API: Inhalt des Ordners abrufen (rekursiv)
+                const apiUrl =
+                    `https://api.github.com/repos/${REPO_NAME}/contents/${PDF_FOLDER}`;
+                const response = await fetch(apiUrl);
 
-    // Dein GitHub-Repository-Name (fest eingetragen für benutzer-seite)
-    const REPO_NAME = 'jobecker/jobecker.github.io';
-
-    // ================================================================
-    // 2. DATEIEN ÜBER GITHUB API ABRUFEN
-    // ================================================================
-    async function fetchPdfFiles() {
-        const container = document.getElementById('pdfList');
-
-        const apiUrl = `https://api.github.com/repos/${REPO_NAME}/contents/${PDF_FOLDER}`;
-
-        try {
-            const response = await fetch(apiUrl);
-
-            if (!response.ok) {
-                if (response.status === 404) {
-                    container.innerHTML = `
-                        <div class="empty-state" style="grid-column:1/-1;">
-                            <span class="big-icon">📂</span>
-                            <h3>Noch keine PDFs gefunden</h3>
-                            <p style="margin-top:8px;">
-                                Lege deine PDF-Dateien in den Ordner 
-                                <code style="background:#e2e8f0;padding:2px 10px;border-radius:6px;">${PDF_FOLDER}</code>
-                                und lade sie per Git-commit hoch.
-                            </p>
-                        </div>
-                    `;
-                } else {
-                    container.innerHTML = `
-                        <div class="empty-state" style="grid-column:1/-1;">
-                            <span class="big-icon">🔒</span>
-                            <h3>Zugriff verweigert</h3>
-                            <p style="margin-top:8px;">GitHub API-Antwort: ${response.status}.<br>
-                            Stelle sicher, dass dein Repository öffentlich ist.</p>
-                        </div>
-                    `;
+                if (!response.ok) {
+                    if (response.status === 404) {
+                        container.innerHTML = `
+                                <div class="empty-state">
+                                    <span class="big-icon">📂</span>
+                                    <h3>Noch keine PDFs gefunden</h3>
+                                    <p style="margin-top:8px;">
+                                        Lege deine PDF-Dateien in den Ordner 
+                                        <code style="background:#e2e8f0;padding:2px 10px;border-radius:6px;">${PDF_FOLDER}</code>
+                                        und lade sie per Git-commit hoch.
+                                    </p>
+                                    <p style="margin-top:12px;font-size:0.9rem;">
+                                        📁 Ordnerstruktur: Semester_1/Mathematik/datei.pdf
+                                    </p>
+                                </div>
+                            `;
+                    } else {
+                        container.innerHTML = `
+                                <div class="empty-state">
+                                    <span class="big-icon">🔒</span>
+                                    <h3>Zugriff verweigert</h3>
+                                    <p style="margin-top:8px;">GitHub API-Antwort: ${response.status}.</p>
+                                </div>
+                            `;
+                    }
+                    return;
                 }
-                return;
-            }
 
-            const data = await response.json();
+                const data = await response.json();
 
-            // Nur Dateien mit Endung .pdf
-            const pdfFiles = data.filter(file =>
-                file.type === 'file' &&
-                file.name.toLowerCase().endsWith('.pdf')
-            );
+                // Alle PDF-Dateien sammeln (auch in Unterordnern)
+                const pdfFiles = [];
+                await collectPdfFiles(data, PDF_FOLDER, pdfFiles);
 
-            if (pdfFiles.length === 0) {
+                if (pdfFiles.length === 0) {
+                    container.innerHTML = `
+                            <div class="empty-state">
+                                <span class="big-icon">📄</span>
+                                <h3>Keine PDF-Dateien im Ordner</h3>
+                                <p style="margin-top:8px;">
+                                    Füge <strong>.pdf</strong>-Dateien in den Ordner 
+                                    <code style="background:#e2e8f0;padding:2px 10px;border-radius:6px;">${PDF_FOLDER}</code> 
+                                    und committe sie.
+                                </p>
+                            </div>
+                        `;
+                    return;
+                }
+
+                // === PDFs nach Semester und Fach gruppieren ===
+                const struktur = {};
+
+                for (const file of pdfFiles) {
+                    // Pfad relativ zu pdfs/ z.B. "Semester_1/Mathematik/Skript.pdf"
+                    const relativePath = file.path.replace(PDF_FOLDER, '');
+                    const parts = relativePath.split('/');
+
+                    let semester = 'Sonstige';
+                    let fach = 'Sonstige';
+                    let fileName = parts[parts.length - 1];
+
+                    if (parts.length === 3) {
+                        semester = parts[0];
+                        fach = parts[1];
+                    } else if (parts.length === 2) {
+                        semester = parts[0];
+                        fach = 'Allgemein';
+                    } else if (parts.length === 1) {
+                        semester = 'Sonstige';
+                        fach = 'Sonstige';
+                    }
+
+                    if (!struktur[semester]) {
+                        struktur[semester] = {};
+                    }
+                    if (!struktur[semester][fach]) {
+                        struktur[semester][fach] = [];
+                    }
+
+                    struktur[semester][fach].push({
+                        name: fileName,
+                        url: file.download_url
+                    });
+                }
+
+                // === HTML generieren ===
+                let html = '';
+
+                // Semester sortieren (versucht numerisch zu sortieren, z.B. Semester_1, Semester_2)
+                const semesterKeys = Object.keys(struktur).sort((a, b) => {
+                    const numA = parseInt(a.replace(/\D/g, ''));
+                    const numB = parseInt(b.replace(/\D/g, ''));
+                    if (!isNaN(numA) && !isNaN(numB)) return numA - numB;
+                    return a.localeCompare(b);
+                });
+
+                for (const semester of semesterKeys) {
+                    const faecher = struktur[semester];
+                    const fachKeys = Object.keys(faecher).sort();
+
+                    html += `<div class="semester-section">`;
+                    html +=
+                        `<div class="semester-title">📘 ${semester} <span class="badge">${fachKeys.length} Fächer</span></div>`;
+
+                    for (const fach of fachKeys) {
+                        const pdfs = faecher[fach];
+                        html += `
+                                <div class="fach-card">
+                                    <div class="fach-header">
+                                        <span class="fach-icon">📁</span>
+                                        <span class="fach-name">${fach}</span>
+                                        <span class="fach-count">${pdfs.length} PDFs</span>
+                                    </div>
+                                    <div class="pdf-list">
+                            `;
+
+                        for (const pdf of pdfs) {
+                            const displayName = pdf.name.replace(/\.pdf$/i, '');
+                            html += `
+                                    <div class="pdf-item">
+                                        <span class="pdf-name" title="${displayName}">📄 ${displayName}</span>
+                                        <div class="pdf-actions">
+                                            <a href="${pdf.url}" target="_blank" class="btn btn-sm-primary">👁️</a>
+                                            <a href="${pdf.url}" download class="btn btn-sm-success">⬇️</a>
+                                        </div>
+                                    </div>
+                                `;
+                        }
+
+                        html += `
+                                    </div>
+                                </div>
+                            `;
+                    }
+
+                    html += `</div>`;
+                }
+
+                container.innerHTML = html;
+
+            } catch (error) {
                 container.innerHTML = `
-                    <div class="empty-state" style="grid-column:1/-1;">
-                        <span class="big-icon">📄</span>
-                        <h3>Keine PDF-Dateien im Ordner</h3>
-                        <p style="margin-top:8px;">
-                            Füge <strong>.pdf</strong>-Dateien in den Ordner 
-                            <code style="background:#e2e8f0;padding:2px 10px;border-radius:6px;">${PDF_FOLDER}</code> 
-                            und committe sie.
-                        </p>
-                    </div>
-                `;
-                return;
-            }
-
-            // Sortieren nach Dateiname
-            pdfFiles.sort((a, b) => a.name.localeCompare(b.name));
-
-            // Für jede PDF-Datei eine Karte erzeugen
-            let html = '';
-            for (const file of pdfFiles) {
-                const displayName = file.name.replace(/\.pdf$/i, '');
-                const rawUrl = file.download_url;
-
-                html += `
-                    <div class="pdf-card">
-                        <div class="pdf-info">
-                            <div class="pdf-icon">📄</div>
-                            <div class="pdf-name" title="${displayName}">${displayName}</div>
+                        <div class="empty-state">
+                            <span class="big-icon">❌</span>
+                            <h3>Fehler beim Laden</h3>
+                            <p style="margin-top:8px;">${error.message}</p>
                         </div>
-                        <div class="pdf-actions">
-                            <a href="${rawUrl}" target="_blank" class="btn btn-primary">👁️ Ansehen</a>
-                            <a href="${rawUrl}" download class="btn btn-success">⬇️ Download</a>
-                        </div>
-                    </div>
-                `;
+                    `;
+                console.error('Fehler beim Abrufen der PDFs:', error);
             }
-
-            container.innerHTML = html;
-
-        } catch (error) {
-            container.innerHTML = `
-                <div class="empty-state" style="grid-column:1/-1;">
-                    <span class="big-icon">❌</span>
-                    <h3>Fehler beim Laden</h3>
-                    <p style="margin-top:8px;">${error.message}</p>
-                </div>
-            `;
-            console.error('Fehler beim Abrufen der PDFs:', error);
         }
-    }
 
-    // ================================================================
-    // 3. START – beim Laden der Seite ausführen
-    // ================================================================
-    document.addEventListener('DOMContentLoaded', fetchPdfFiles);
-</script>
+        // ================================================================
+        // 3. HILFSFUNKTION: PDFs rekursiv aus Ordnern sammeln
+        // ================================================================
+        async function collectPdfFiles(items, currentPath, pdfFiles) {
+            for (const item of items) {
+                if (item.type === 'file' && item.name.toLowerCase().endsWith('.pdf')) {
+                    pdfFiles.push({
+                        name: item.name,
+                        path: item.path,
+                        download_url: item.download_url
+                    });
+                } else if (item.type === 'dir') {
+                    // In Unterordner gehen
+                    const subUrl = `https://api.github.com/repos/${REPO_NAME}/contents/${item.path}`;
+                    try {
+                        const subResponse = await fetch(subUrl);
+                        if (subResponse.ok) {
+                            const subData = await subResponse.json();
+                            await collectPdfFiles(subData, item.path, pdfFiles);
+                        }
+                    } catch (e) {
+                        console.warn(`Konnte Unterordner ${item.path} nicht lesen:`, e);
+                    }
+                }
+            }
+        }
+
+        // ================================================================
+        // 4. START
+        // ================================================================
+        document.addEventListener('DOMContentLoaded', fetchAllPdfs);
+    </script>
 
 </body>
 </html>
