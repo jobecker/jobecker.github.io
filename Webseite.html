@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meine Studienunterlagen</title>
+    <style>
+        /* === MODERNES, SAUBERES DESIGN === */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, system-ui, -apple-system, sans-serif;
+            background: #f4f6f9;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            padding: 2rem 1rem;
+        }
+
+        .container {
+            max-width: 900px;
+            width: 100%;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #1e2a3a, #0f172a);
+            color: white;
+            padding: 2rem 2.5rem;
+            border-radius: 24px;
+            margin-bottom: 2.5rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .header h1 {
+            font-size: 2.2rem;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .header h1 span {
+            background: #3b82f6;
+            font-size: 1rem;
+            padding: 2px 14px;
+            border-radius: 40px;
+            font-weight: 400;
+        }
+
+        .header p {
+            margin-top: 10px;
+            opacity: 0.8;
+            font-size: 1.05rem;
+        }
+
+        /* Karten-Layout für die PDFs */
+        .pdf-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 1.25rem;
+        }
+
+        .pdf-card {
+            background: white;
+            border-radius: 18px;
+            padding: 1.5rem 1.2rem 1.2rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+            transition: transform 0.15s ease, box-shadow 0.2s ease;
+            border: 1px solid rgba(0, 0, 0, 0.04);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .pdf-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 14px 30px rgba(0, 0, 0, 0.10);
+            border-color: #dbeafe;
+        }
+
+        /* PDF-Icon + Dateiname */
+        .pdf-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 14px;
+        }
+
+        .pdf-icon {
+            background: #fee2e2;
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+            color: #b91c1c;
+        }
+
+        .pdf-name {
+            font-weight: 600;
+            font-size: 1rem;
+            color: #0f172a;
+            word-break: break-word;
+            line-height: 1.3;
+        }
+
+        /* Buttons */
+        .pdf-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: auto;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            flex: 1;
+            min-width: 70px;
+            text-align: center;
+            padding: 0.55rem 0.2rem;
+            border-radius: 40px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: background 0.15s, color 0.15s;
+            border: 1px solid transparent;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: #1e293b;
+            color: white;
+        }
+        .btn-primary:hover {
+            background: #0f172a;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border-color: #cbd5e1;
+            color: #334155;
+        }
+        .btn-outline:hover {
+            background: #f1f5f9;
+            border-color: #94a3b8;
+        }
+
+        .btn-success {
+            background: #dcfce7;
+            color: #166534;
+            border-color: #86efac;
+        }
+        .btn-success:hover {
+            background: #bbf7d0;
+        }
+
+        /* Leerer Zustand / keine PDFs */
+        .empty-state {
+            background: white;
+            border-radius: 24px;
+            padding: 3.5rem 2rem;
+            text-align: center;
+            color: #64748b;
+            border: 2px dashed #e2e8f0;
+        }
+        .empty-state .big-icon {
+            font-size: 4rem;
+            display: block;
+            margin-bottom: 1rem;
+        }
+        .empty-state h3 {
+            color: #1e293b;
+            font-weight: 500;
+        }
+
+        /* Footer */
+        .footer {
+            margin-top: 3rem;
+            text-align: center;
+            color: #94a3b8;
+            font-size: 0.9rem;
+            border-top: 1px solid #e2e8f0;
+            padding-top: 1.8rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 1.6rem;
+                flex-wrap: wrap;
+            }
+            .pdf-grid {
+                grid-template-columns: 1fr;
+            }
+            .pdf-actions {
+                flex-direction: row;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- HEADER -->
+    <div class="header">
+        <h1>
+            📚 Studienunterlagen
+            <span>PDF</span>
+        </h1>
+        <p>Alle deine Skripte, Vorlesungsfolien und Übungen – immer griffbereit.</p>
+    </div>
+
+    <!-- PDF-LISTE WIRD VON JAVASCRIPT BEFÜLLT -->
+    <div id="pdfList" class="pdf-grid">
+        <!-- Hier erscheinen automatisch alle PDFs aus dem /pdfs/ Ordner -->
+    </div>
+
+    <!-- FOOTER -->
+    <div class="footer">
+        🚀 Gehostet auf GitHub Pages · automatisch aktualisiert
+    </div>
+</div>
+
+<script>
+    // ================================================================
+    // 1. PFAD ZU DEINEN PDFs – hier kannst du den Ordner anpassen
+    // ================================================================
+    const PDF_FOLDER = 'pdfs/';   // <-- Ordner in deinem Repository
+
+    // ================================================================
+    // 2. DATEIEN ÜBER GITHUB API ABRUFEN (ohne manuelle Liste)
+    // ================================================================
+    async function fetchPdfFiles() {
+        const container = document.getElementById('pdfList');
+
+        // GitHub API: Inhalt des Ordners abfragen
+        // Achtung: Der Pfad muss relativ zum Repository-Root sein.
+        // Wenn dein Repository z.B. "meine-unterlagen" heißt und die PDFs im
+        // Ordner "pdfs" liegen, dann ist der API-Pfad: /repos/.../contents/pdfs
+        // Wir nutzen window.location.pathname, um den Repo-Namen zu ermitteln.
+        const repoPath = window.location.pathname;   // z.B. "/benutzername/repo-name/"
+        const repoMatch = repoPath.match(/^\/([^/]+\/[^/]+)\//);
+        if (!repoMatch) {
+            container.innerHTML = `
+                <div class="empty-state" style="grid-column:1/-1;">
+                    <span class="big-icon">⚠️</span>
+                    <h3>Repository-Name konnte nicht erkannt werden</h3>
+                    <p style="margin-top:8px;">Bitte öffne diese Seite über GitHub Pages.</p>
+                </div>
+            `;
+            return;
+        }
+
+        const repoFullName = repoMatch[1]; // z.B. "maxmustermann/meine-unterlagen"
+        const apiUrl = `https://api.github.com/repos/${repoFullName}/contents/${PDF_FOLDER}`;
+
+        try {
+            const response = await fetch(apiUrl);
+
+            // Falls der Ordner nicht existiert oder leer ist
+            if (!response.ok) {
+                if (response.status === 404) {
+                    container.innerHTML = `
+                        <div class="empty-state" style="grid-column:1/-1;">
+                            <span class="big-icon">📂</span>
+                            <h3>Noch keine PDFs gefunden</h3>
+                            <p style="margin-top:8px;">
+                                Lege deine PDF-Dateien in den Ordner 
+                                <code style="background:#e2e8f0;padding:2px 10px;border-radius:6px;">${PDF_FOLDER}</code>
+                                und lade sie per Git-commit hoch.
+                            </p>
+                        </div>
+                    `;
+                } else {
+                    container.innerHTML = `
+                        <div class="empty-state" style="grid-column:1/-1;">
+                            <span class="big-icon">🔒</span>
+                            <h3>Zugriff verweigert</h3>
+                            <p style="margin-top:8px;">GitHub API-Antwort: ${response.status}.<br>
+                            Stelle sicher, dass dein Repository öffentlich ist (oder füge einen Token hinzu).</p>
+                        </div>
+                    `;
+                }
+                return;
+            }
+
+            const data = await response.json();
+
+            // Nur Dateien mit Endung .pdf (Groß-/Kleinschreibung egal)
+            const pdfFiles = data.filter(file =>
+                file.type === 'file' &&
+                file.name.toLowerCase().endsWith('.pdf')
+            );
+
+            if (pdfFiles.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state" style="grid-column:1/-1;">
+                        <span class="big-icon">📄</span>
+                        <h3>Keine PDF-Dateien im Ordner</h3>
+                        <p style="margin-top:8px;">
+                            Füge <strong>.pdf</strong>-Dateien in den Ordner 
+                            <code style="background:#e2e8f0;padding:2px 10px;border-radius:6px;">${PDF_FOLDER}</code> 
+                            und committe sie.
+                        </p>
+                    </div>
+                `;
+                return;
+            }
+
+            // Sortieren nach Dateiname (alphabetisch)
+            pdfFiles.sort((a, b) => a.name.localeCompare(b.name));
+
+            // Für jede PDF-Datei eine Karte erzeugen
+            let html = '';
+            for (const file of pdfFiles) {
+                // Dateiname ohne Endung für den Anzeigenamen
+                const displayName = file.name.replace(/\.pdf$/i, '');
+
+                // Roh-URL (für "Ansehen" im Browser)
+                const rawUrl = file.download_url;
+
+                // Direkter Download-Link (gleiche URL, aber mit ?raw – für Download-Button)
+                // download_url ist bereits der rohe Link, aber wir nutzen ihn für beide.
+                const downloadUrl = rawUrl;
+
+                html += `
+                    <div class="pdf-card">
+                        <div class="pdf-info">
+                            <div class="pdf-icon">📄</div>
+                            <div class="pdf-name" title="${displayName}">${displayName}</div>
+                        </div>
+                        <div class="pdf-actions">
+                            <a href="${rawUrl}" target="_blank" class="btn btn-primary">👁️ Ansehen</a>
+                            <a href="${downloadUrl}" download class="btn btn-success">⬇️ Download</a>
+                        </div>
+                    </div>
+                `;
+            }
+
+            container.innerHTML = html;
+
+        } catch (error) {
+            container.innerHTML = `
+                <div class="empty-state" style="grid-column:1/-1;">
+                    <span class="big-icon">❌</span>
+                    <h3>Fehler beim Laden</h3>
+                    <p style="margin-top:8px;">${error.message}</p>
+                </div>
+            `;
+            console.error('Fehler beim Abrufen der PDFs:', error);
+        }
+    }
+
+    // ================================================================
+    // 3. START – beim Laden der Seite ausführen
+    // ================================================================
+    document.addEventListener('DOMContentLoaded', fetchPdfFiles);
+</script>
+
+</body>
+</html>
